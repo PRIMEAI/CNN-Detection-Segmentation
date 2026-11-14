@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f4ee;--panel:#ffffff;--ink:#1c1b19;--muted:#6b675f;--line:#e2ddd2;--soft:#efebe2;
+  --accent:#0f6e66;--accent-ink:#ffffff;--accent-soft:#d8ecea;--hl:#e09a2d;--hl-soft:#fbe8c6;
+  --pos:#2a6fdb;--neg:#d2453b;--zero:#f4f2ec;--r:#d2453b;--g:#2f9e57;--b:#2a6fdb;--vio:#7a4fd0;
+  --shadow:0 1px 2px rgba(30,25,15,.06),0 4px 16px rgba(30,25,15,.05);
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#151513;--panel:#1e1d1a;--ink:#ece9e2;--muted:#a19b8f;--line:#35322c;--soft:#272520;
+  --accent:#4fb5aa;--accent-ink:#0d1f1d;--accent-soft:#1b3b38;--hl:#f0b456;--hl-soft:#41321a;
+  --pos:#6ea3ff;--neg:#ff7d72;--zero:#25231f;--r:#ff7d72;--g:#5cc97f;--b:#6ea3ff;--vio:#a985f0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);}}
+:root[data-theme="dark"]{
+  --bg:#151513;--panel:#1e1d1a;--ink:#ece9e2;--muted:#a19b8f;--line:#35322c;--soft:#272520;
+  --accent:#4fb5aa;--accent-ink:#0d1f1d;--accent-soft:#1b3b38;--hl:#f0b456;--hl-soft:#41321a;
+  --pos:#6ea3ff;--neg:#ff7d72;--zero:#25231f;--r:#ff7d72;--g:#5cc97f;--b:#6ea3ff;--vio:#a985f0;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--sans);}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 16px 48px}
+header.top{margin-bottom:22px}
+.eyebrow{font:500 12px/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent);display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.eyebrow a{color:var(--muted);text-decoration:none}.eyebrow a:hover{color:var(--accent)}
+h1{font-size:clamp(26px,4vw,36px);line-height:1.15;margin:8px 0 10px;letter-spacing:-.01em;font-weight:600}
+h2{font-size:19px;margin:0 0 12px;font-weight:600}
+h3{font-size:15px;margin:0 0 8px;font-weight:600}
+.author{font:500 15px var(--sans);color:var(--ink);margin:-4px 0 12px;letter-spacing:.01em}
+.lead{max-width:780px;color:var(--muted);margin:0;font-size:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow)}
+.stack{display:flex;flex-direction:column;gap:16px}
+.row{display:flex;gap:16px;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:860px){.grid2{grid-template-columns:1fr}}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.mono{font-family:var(--mono)}
+.controls{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center}
+.ctl{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--muted);min-width:0}
+.ctl b{color:var(--ink);font:600 13px var(--mono)}
+.ctl .lab{display:flex;justify-content:space-between;gap:10px}
+select,input[type=number],input[type=text]{font:14px var(--sans);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:8px;padding:6px 8px;min-height:34px}
+input[type=number]{width:72px;font-family:var(--mono)}
+input[type=range]{accent-color:var(--accent);width:150px}
+.btn{font:500 14px var(--sans);color:var(--ink);background:var(--soft);border:1px solid var(--line);border-radius:9px;padding:7px 13px;cursor:pointer;min-height:36px;display:inline-flex;align-items:center;gap:6px;transition:background .15s,border-color .15s}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.on{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.btn:disabled{opacity:.45;cursor:default}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;flex-wrap:wrap}
+.seg button{font:500 13px var(--sans);background:var(--soft);color:var(--ink);border:0;padding:7px 12px;cursor:pointer;min-height:34px}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button.on{background:var(--accent);color:var(--accent-ink)}
+.mat{display:inline-grid;gap:3px;font-family:var(--mono)}
+.cell{width:var(--cs,40px);height:var(--cs,40px);display:flex;align-items:center;justify-content:center;border-radius:6px;background:var(--zero);font-size:calc(var(--cs,40px)*.36);position:relative;border:1.5px solid transparent;transition:background .2s,border-color .15s,box-shadow .15s;color:var(--ink);user-select:none}
+.cell.pad{background:transparent;border:1.5px dashed var(--line);color:var(--muted)}
+.cell.win{border-color:var(--hl);box-shadow:0 0 0 2px var(--hl-soft)}
+.cell.cur{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.cell.dim{opacity:.35}
+.cell .w{position:absolute;right:3px;bottom:1px;font-size:calc(var(--cs,40px)*.24);color:var(--hl);font-weight:600}
+.cell.clickable{cursor:pointer}.cell.clickable:hover{border-color:var(--accent)}
+.mlabel{font:600 12px var(--mono);color:var(--muted);margin-bottom:6px;letter-spacing:.03em}
+.formula{font-family:var(--mono);font-size:14px;background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:12px 14px;overflow-x:auto;line-height:1.8}
+.formula .res{color:var(--accent);font-weight:600}
+.pill{display:inline-flex;align-items:center;gap:6px;font:600 12px var(--mono);padding:3px 9px;border-radius:999px;background:var(--accent-soft);color:var(--ink)}
+.pill.warn{background:var(--hl-soft)}
+.pill.bad{background:color-mix(in oklab,var(--neg) 22%,transparent)}
+.note{border-left:3px solid var(--accent);padding:8px 12px;background:var(--soft);border-radius:0 8px 8px 0;font-size:14px}
+.note.warn{border-color:var(--hl)}
+.note.bad{border-color:var(--neg)}
+.kpis{display:flex;gap:10px;flex-wrap:wrap}
+.kpi{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:130px}
+.kpi .v{font:600 22px var(--mono);color:var(--ink)}
+.kpi .k{font-size:12px;color:var(--muted)}
+.op{font:600 22px var(--mono);color:var(--muted);align-self:center;padding:0 4px}
+.scrollx{overflow-x:auto;max-width:100%}
+.svgbox svg{width:100%;height:auto;display:block}
+.barrow{display:grid;grid-template-columns:200px 1fr 120px;gap:8px;align-items:center;font-size:13px;margin:6px 0}
+.barrow .b{height:18px;border-radius:5px;background:var(--accent);transition:width .25s}
+.barrow span:last-child{font-family:var(--mono);text-align:right}
+@media (max-width:640px){.barrow{grid-template-columns:110px 1fr 96px}}
+table.t{border-collapse:collapse;font:13px var(--mono);width:100%}
+table.t th,table.t td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+table.t th{color:var(--muted);font-weight:600}
+table.t th:first-child,table.t td:first-child{text-align:left}
+table.t tr.sel td{background:var(--accent-soft)}
+table.t tr.clk{cursor:pointer}table.t tr.clk:hover td{background:var(--soft)}
+footer{margin-top:36px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:14px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer a{color:var(--accent)}
+svg text{font-family:var(--sans)}
+canvas.px{image-rendering:pixelated}
+kbd{font:12px var(--mono);background:var(--soft);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:1px 5px}
+.hidden{display:none!important}
+@media (max-width:640px){.wrap{padding:20px 16px 40px}.card{padding:14px}input[type=range]{width:120px}}
+</style>
+<title>CNN – Suppression des non-maxima (NMS)</title>
+<style>
+.lay2{display:grid;grid-template-columns:minmax(0,640px) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:900px){.lay2{grid-template-columns:1fr}}
+#cv{width:100%;height:auto;border-radius:12px;border:1px solid var(--line);display:block}
+.st{font:600 11px var(--mono);padding:2px 8px;border-radius:999px}
+.st.c{background:var(--hl-soft)}.st.k{background:var(--accent);color:var(--accent-ink)}.st.s{background:var(--line);color:var(--muted)}
+ol.algo{margin:0;padding-left:20px;font-size:14px}
+ol.algo li.on{font-weight:600;color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow"><span>Détection et segmentation</span><a href="index.html">← Toutes les animations</a></div>
+  <h1>Suppression des non-maxima (NMS)</h1>
+  <p class="author">Moulay Akhloufi</p>
+  <p class="lead">Un détecteur propose souvent plusieurs boîtes très proches pour le même objet. La NMS n’en garde qu’<strong>une par objet</strong> : on garde la boîte de meilleur score, on supprime celles qui la recouvrent trop (IoU au-dessus d’un seuil), et on recommence avec les boîtes restantes.</p>
+</header>
+<div class="stack">
+  <section class="card stack">
+    <div class="controls"><span id="th"></span><button class="btn" id="rnd">🎲 Autres détections</button><button class="btn" id="ex">Exemple du cours</button></div>
+    <div id="bar"></div>
+    <div class="lay2">
+      <canvas id="cv" width="640" height="440"></canvas>
+      <div class="stack">
+        <ol class="algo" id="algo"><li>Trier les boîtes par score décroissant</li><li>Garder la boîte de score maximal</li><li>Supprimer celles dont l’IoU avec elle dépasse le seuil</li><li>Recommencer avec les boîtes restantes</li></ol>
+        <div class="formula" id="msg"></div>
+        <table class="t" id="tbl"></table>
+      </div>
+    </div>
+  </section>
+  <section class="card stack">
+    <h2>À retenir</h2>
+    <div class="note">Exemple du cours : scores 0,92 ; 0,88 ; 0,81 ; 0,74 ; 0,65. On garde 0,92 et on supprime 0,81 et 0,74 (IoU &gt; 0,5 avec elle). On garde ensuite 0,88 et on supprime 0,65. Résultat : une boîte par objet.</div>
+    <div class="note warn">Seuil trop bas : deux objets proches l’un de l’autre peuvent être fusionnés (un des deux disparaît). Seuil trop haut : des doublons survivent. La NMS se fait classe par classe. Des détecteurs récents (DETR) s’en passent.</div>
+  </section>
+</div>
+<footer><span>© 2026 Moulay Akhloufi · Deep Learning · Détection et segmentation</span><a href="index.html">Toutes les animations du module →</a></footer>
+</div>
+<script>
+// ---- utilitaires communs ----
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+function h(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs || {})) {
+    if (k === 'class') e.className = v;
+    else if (k === 'style' && v && typeof v === 'object') { for (const [sk, sv] of Object.entries(v)) { if (sv == null) continue; sk.startsWith('--') ? e.style.setProperty(sk, sv) : (e.style[sk] = sv); } }
+    else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+    else if (k === 'html') e.innerHTML = v;
+    else if (v !== false && v != null) e.setAttribute(k, v);
+  }
+  for (const c of kids.flat()) if (c != null) e.append(c.nodeType ? c : document.createTextNode(c));
+  return e;
+}
+function fmt(x, d = 2) {
+  if (!isFinite(x)) return x > 0 ? '∞' : '—';
+  let s = (Math.round(x * 10 ** d) / 10 ** d).toString();
+  if (s === '-0') s = '0';
+  if (s.includes('e')) s = x.toExponential(1);
+  return s.replace('.', ',').replace('-', '−');
+}
+function fmtInt(n) { return Math.round(n).toLocaleString('fr-CA').replace(/ | /g, ' '); }
+function fmtM(n) { return n >= 1e9 ? fmt(n / 1e9, 2) + ' G' : n >= 1e6 ? fmt(n / 1e6, 2) + ' M' : n >= 1e3 ? fmt(n / 1e3, 1) + ' k' : fmtInt(n); }
+function par(x) { return x < 0 ? '(' + fmt(x) + ')' : fmt(x); }
+const clamp = (x, a, b) => Math.max(a, Math.min(b, x));
+function divColor(v, m) {
+  if (!m) return 'var(--zero)';
+  const t = clamp(Math.abs(v) / m, 0, 1);
+  return `color-mix(in oklab, ${v < 0 ? 'var(--neg)' : 'var(--pos)'} ${Math.round(t * 70)}%, var(--zero))`;
+}
+function seqColor(v, m, c = 'var(--accent)', top = 75) {
+  const t = m ? clamp(v / m, 0, 1) : 0;
+  return `color-mix(in oklab, ${c} ${Math.round(t * top)}%, var(--zero))`;
+}
+function rng(seed = 1) { let s = seed >>> 0; return () => ((s = (s * 1664525 + 1013904223) >>> 0) / 4294967296); }
+function gauss(R) { let u = 0; while (!u) u = R(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * R()); }
+const cssv = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const isDark = () => matchMedia('(prefers-color-scheme: dark)').matches;
+class Player {
+  constructor({ n, onStep, speed = 900 }) { this.n = n; this.i = 0; this.onStep = onStep; this.speed = speed; this.t = null; }
+  go(i) { this.i = ((i % this.n) + this.n) % this.n; this.onStep(this.i); }
+  next() { this.go(this.i + 1); } prev() { this.go(this.i - 1); }
+  play() { this.stop(); this.t = setInterval(() => this.next(), this.speed); this.playing = true; }
+  stop() { clearInterval(this.t); this.t = null; this.playing = false; }
+  toggle() { this.playing ? this.stop() : this.play(); return this.playing; }
+  setSpeed(ms) { this.speed = ms; if (this.playing) this.play(); }
+}
+function playerBar(p, { extra = [], prevNext = true } = {}) {
+  const play = h('button', { class: 'btn primary', onclick: () => { play.textContent = p.toggle() ? '❚❚ Pause' : '▶ Lecture'; } }, '▶ Lecture');
+  const sp = h('input', { type: 'range', min: 100, max: 2000, step: 50, value: 2100 - p.speed, oninput: e => p.setSpeed(2100 - +e.target.value), 'aria-label': 'Vitesse' });
+  const kids = prevNext ? [h('button', { class: 'btn', onclick: () => { bar.stopUI(); p.prev(); } }, '◀ Précédent'), play, h('button', { class: 'btn', onclick: () => { bar.stopUI(); p.next(); } }, 'Suivant ▶')] : [play];
+  const bar = h('div', { class: 'controls' }, ...kids, h('label', { class: 'ctl' }, h('span', {}, 'Vitesse'), sp), ...extra);
+  bar.stopUI = () => { p.stop(); play.textContent = '▶ Lecture'; };
+  return bar;
+}
+function slider({ label, min, max, step = 1, value, onInput, fmtv = v => v, width }) {
+  const out = h('b', {}, fmtv(value));
+  const inp = h('input', { type: 'range', min, max, step, value, style: width ? { width } : null });
+  inp.addEventListener('input', () => { out.textContent = fmtv(+inp.value); onInput(+inp.value); });
+  const w = h('label', { class: 'ctl' }, h('span', { class: 'lab' }, h('span', {}, label), out), inp);
+  w.input = inp; w.set = v => { inp.value = v; out.textContent = fmtv(+v); };
+  return w;
+}
+function segmented(options, value, onChange) {
+  const s = h('div', { class: 'seg', role: 'group' }); const b2 = new Map();
+  const btns = options.map(([v, l]) => { const b = h('button', { class: v === value ? 'on' : '', onclick: () => { btns.forEach(x => x.classList.remove('on')); b.classList.add('on'); onChange(v); } }, l); b2.set(v, b); return b; });
+  s.append(...btns); s.set = v => { btns.forEach(b => b.classList.remove('on')); b2.get(v) && b2.get(v).classList.add('on'); };
+  return s;
+}
+function matrix(rows, cols, { cs = 40, gap = 3, cls = '' } = {}) {
+  const el = h('div', { class: 'mat ' + cls, style: { gridTemplateColumns: `repeat(${cols}, var(--cs))`, '--cs': cs + 'px', gap: gap + 'px' } });
+  const cells = [];
+  for (let r = 0; r < rows; r++) { cells.push([]); for (let c = 0; c < cols; c++) { const d = h('div', { class: 'cell' }); el.append(d); cells[r].push(d); } }
+  return { el, cells };
+}
+// image en niveaux de gris (Float32Array w×h, valeurs 0..1 ou signées) → canvas
+function grayCanvas(data, w, hh, { scale = 4, mode = 'gray', max = null, el = null } = {}) {
+  const cv = el || h('canvas', { class: 'px' }); cv.width = w; cv.height = hh;
+  cv.style.width = w * scale + 'px'; cv.style.height = hh * scale + 'px';
+  const ctx = cv.getContext('2d'), im = ctx.createImageData(w, hh);
+  let m = max; if (m == null) { m = 1e-9; for (const v of data) m = Math.max(m, Math.abs(v)); }
+  for (let i = 0; i < w * hh; i++) {
+    const v = data[i]; let c;
+    if (mode === 'gray') { const g = 255 * clamp(v / m, 0, 1); c = [g, g, g]; }
+    else if (mode === 'heat') { const t = clamp(v / m, 0, 1); c = [255 * Math.min(1, t * 1.6), 255 * clamp(t * 1.6 - .5, 0, 1), 60 * (1 - t)]; }
+    else { const t = clamp(v / m, -1, 1); c = t >= 0 ? [255 - 200 * t, 255 - 130 * t, 255] : [255, 255 + 190 * t, 255 + 180 * t]; }
+    im.data[4 * i] = c[0]; im.data[4 * i + 1] = c[1]; im.data[4 * i + 2] = c[2]; im.data[4 * i + 3] = 255;
+  }
+  ctx.putImageData(im, 0, 0); return cv;
+}
+// tracé de courbes simple en SVG
+function lineChart({ series, w = 520, hgt = 240, xmin, xmax, ymin, ymax, xlabel = '', ylabel = '', pad = 38, extra = '', xticks = 5, yticks = 4, yfmt = v => fmt(v, 2), xfmt = v => fmt(v, 1) }) {
+  const X = x => pad + (x - xmin) / (xmax - xmin) * (w - pad - 12), Y = y => hgt - pad + 8 - (y - ymin) / (ymax - ymin) * (hgt - pad - 4);
+  let s = `<svg viewBox="0 0 ${w} ${hgt + 10}">`;
+  for (let i = 0; i <= yticks; i++) { const v = ymin + (ymax - ymin) * i / yticks; s += `<line x1="${pad}" x2="${w - 12}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)"/><text x="${pad - 6}" y="${Y(v) + 4}" font-size="11" text-anchor="end" fill="var(--muted)">${yfmt(v)}</text>`; }
+  for (let i = 0; i <= xticks; i++) { const v = xmin + (xmax - xmin) * i / xticks; s += `<text x="${X(v)}" y="${hgt + 6}" font-size="11" text-anchor="middle" fill="var(--muted)">${xfmt(v)}</text>`; }
+  if (xlabel) s += `<text x="${w - 12}" y="${hgt - pad + 2}" font-size="11" text-anchor="end" fill="var(--muted)">${xlabel}</text>`;
+  if (ylabel) s += `<text x="${pad + 4}" y="12" font-size="11" fill="var(--muted)">${ylabel}</text>`;
+  for (const sr of series) {
+    if (sr.pts.length < 2 && !sr.dots) continue;
+    if (sr.dots) for (const [x, y] of sr.pts) s += `<circle cx="${X(x)}" cy="${Y(clamp(y, ymin, ymax))}" r="${sr.r || 3.5}" fill="${sr.color}" fill-opacity="${sr.op || 1}"/>`;
+    else s += `<path d="${sr.pts.map(([x, y], i) => (i ? 'L' : 'M') + X(x).toFixed(1) + ',' + Y(clamp(y, ymin - (ymax - ymin), ymax + (ymax - ymin))).toFixed(1)).join('')}" fill="${sr.fill || 'none'}" fill-opacity="${sr.fillop || .2}" stroke="${sr.color}" stroke-width="${sr.width || 2.5}" ${sr.dash ? `stroke-dasharray="${sr.dash}"` : ''}/>`;
+  }
+  return s + (typeof extra === 'function' ? extra(X, Y) : extra) + '</svg>';
+}
+
+// ---- scène synthétique commune : ciel, herbe, arbre, un chat et deux chiens ----
+// Chaque objet est une liste de primitives analytiques (test d'appartenance exact).
+const SCENE_W = 320, SCENE_H = 220;
+const CLASSES = { 0: ['ciel', '#9cc8ef'], 1: ['herbe', '#7cbf5a'], 2: ['arbre', '#2f7d3a'], 3: ['chat', '#f08a24'], 4: ['chien', '#8a5cc8'] };
+const inEll = (x, y, cx, cy, rx, ry) => ((x - cx) / rx) ** 2 + ((y - cy) / ry) ** 2 <= 1;
+const inRect = (x, y, x0, y0, w, h) => x >= x0 && x <= x0 + w && y >= y0 && y <= y0 + h;
+const inTri = (x, y, [ax, ay], [bx, by], [cx, cy]) => { const d = (bx - ax) * (cy - ay) - (by - ay) * (cx - ax); const u = ((bx - x) * (cy - y) - (by - y) * (cx - x)) / d, v = ((cx - x) * (ay - y) - (cy - y) * (ax - x)) / d; return u >= 0 && v >= 0 && u + v <= 1; };
+function animal(kind, cx, cy, s, dir = 1) {
+  const P = [];
+  P.push(['e', cx, cy, 30 * s, 17 * s]);                                  // corps
+  const hx = cx + dir * 30 * s, hy = cy - 14 * s;
+  P.push(['e', hx, hy, 13 * s, 12 * s]);                                  // tête
+  for (const dx of [-18, -6, 8, 20]) P.push(['r', cx + dx * s - 3 * s, cy + 8 * s, 6 * s, 17 * s]); // pattes
+  if (kind === 'chat') {
+    P.push(['t', [hx - 10 * s, hy - 6 * s], [hx - 4 * s, hy - 22 * s], [hx + 1 * s, hy - 9 * s]]);
+    P.push(['t', [hx + 1 * s, hy - 9 * s], [hx + 7 * s, hy - 22 * s], [hx + 11 * s, hy - 5 * s]]);
+    P.push(['e', cx - dir * 33 * s, cy - 14 * s, 4 * s, 16 * s]);           // queue dressée
+  } else {
+    P.push(['e', hx + dir * 12 * s, hy + 4 * s, 9 * s, 6 * s]);            // museau
+    P.push(['e', hx - dir * 5 * s, hy - 2 * s, 5 * s, 11 * s]);            // oreille tombante
+    P.push(['e', cx - dir * 34 * s, cy - 6 * s, 9 * s, 3.5 * s]);           // queue
+  }
+  return P;
+}
+const OBJECTS = [
+  { cls: 2, id: 1, name: 'arbre', prims: [['r', 40, 66, 16, 70], ['e', 48, 52, 36, 34]] },
+  { cls: 3, id: 2, name: 'chat', prims: animal('chat', 130, 160, 1.05, 1) },
+  { cls: 4, id: 3, name: 'chien', prims: animal('chien', 222, 172, 1.05, 1) },
+  { cls: 4, id: 4, name: 'chien', prims: animal('chien', 285, 130, .72, -1) },
+];
+const HORIZON = 112;
+function inPrims(x, y, prims) { for (const p of prims) { if (p[0] === 'e' && inEll(x, y, p[1], p[2], p[3], p[4])) return true; if (p[0] === 'r' && inRect(x, y, p[1], p[2], p[3], p[4])) return true; if (p[0] === 't' && inTri(x, y, p[1], p[2], p[3])) return true; } return false; }
+// étiquette (classe, instance) du pixel (x, y) ; les derniers objets sont devant
+function labelAt(x, y) { for (let i = OBJECTS.length - 1; i >= 0; i--) if (inPrims(x, y, OBJECTS[i].prims)) return [OBJECTS[i].cls, OBJECTS[i].id]; return [y < HORIZON ? 0 : 1, 0]; }
+function bboxOf(o) { let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9; for (let y = 0; y < SCENE_H; y++) for (let x = 0; x < SCENE_W; x++) if (inPrims(x + .5, y + .5, o.prims)) { x0 = Math.min(x0, x); y0 = Math.min(y0, y); x1 = Math.max(x1, x); y1 = Math.max(y1, y); } return [x0, y0, x1 + 1, y1 + 1]; }
+// rendu « photo » vectoriel sur un canvas
+function drawScenePhoto(ctx, sx = 1) {
+  ctx.save(); ctx.scale(sx, sx);
+  let g = ctx.createLinearGradient(0, 0, 0, HORIZON); g.addColorStop(0, '#7fb4e6'); g.addColorStop(1, '#cfe5f7'); ctx.fillStyle = g; ctx.fillRect(0, 0, SCENE_W, HORIZON);
+  g = ctx.createLinearGradient(0, HORIZON, 0, SCENE_H); g.addColorStop(0, '#8dc865'); g.addColorStop(1, '#5c9c3c'); ctx.fillStyle = g; ctx.fillRect(0, HORIZON, SCENE_W, SCENE_H - HORIZON);
+  ctx.fillStyle = '#f7d65a'; ctx.beginPath(); ctx.arc(268, 34, 16, 0, 7); ctx.fill();
+  const col = { 2: ['#6b4a2b', '#2f7d3a'], 3: ['#e3913a', '#e3913a'], 4: ['#8b6a4f', '#8b6a4f'] };
+  for (const o of OBJECTS) {
+    o.prims.forEach((p, i) => {
+      ctx.fillStyle = o.cls === 2 ? (i === 0 ? col[2][0] : col[2][1]) : (o.id === 4 ? '#b9a48c' : col[o.cls][0]);
+      ctx.beginPath();
+      if (p[0] === 'e') ctx.ellipse(p[1], p[2], p[3], p[4], 0, 0, 7);
+      else if (p[0] === 'r') ctx.rect(p[1], p[2], p[3], p[4]);
+      else { ctx.moveTo(...p[1]); ctx.lineTo(...p[2]); ctx.lineTo(...p[3]); ctx.closePath(); }
+      ctx.fill();
+    });
+  }
+  // yeux
+  ctx.fillStyle = '#222';
+  for (const o of OBJECTS.slice(1)) { const hd = o.prims[1]; ctx.beginPath(); ctx.arc(hd[1] + (o.id === 4 ? -3 : 3), hd[2] - 2, 1.6, 0, 7); ctx.fill(); }
+  ctx.restore();
+}
+
+const S = 2, cv = $('#cv'), ctx = cv.getContext('2d');
+let th = 0.5, boxes = [], steps = [];
+$('#th').append(slider({ label: 'Seuil IoU', min: 0.1, max: 0.9, step: 0.05, value: th, fmtv: v => fmt(v, 2), onInput: v => { th = v; plan(); player.go(player.i); } }));
+const iou = (a, b) => { const x0 = Math.max(a[0], b[0]), y0 = Math.max(a[1], b[1]), x1 = Math.min(a[2], b[2]), y1 = Math.min(a[3], b[3]); const i = Math.max(0, x1 - x0) * Math.max(0, y1 - y0); return i / ((a[2] - a[0]) * (a[3] - a[1]) + (b[2] - b[0]) * (b[3] - b[1]) - i); };
+const DOG = bboxOf(OBJECTS[2]), CAT = bboxOf(OBJECTS[1]);
+const shift = (b, dx, dy, sx = 1, sy = 1) => { const w = b[2] - b[0], hh = b[3] - b[1], cx = (b[0] + b[2]) / 2 + dx, cy = (b[1] + b[3]) / 2 + dy; return [cx - w * sx / 2, cy - hh * sy / 2, cx + w * sx / 2, cy + hh * sy / 2]; };
+function example() {
+  boxes = [
+    { b: shift(DOG, 0, 0), s: .92, o: 'chien' }, { b: shift(CAT, 2, -1), s: .88, o: 'chat' },
+    { b: shift(DOG, 8, -4, .95, 1.05), s: .81, o: 'chien' }, { b: shift(DOG, -6, 3, 1.15, 1.1), s: .74, o: 'chien' }, { b: shift(CAT, -9, 5, 1.1, 1.05), s: .65, o: 'chat' }];
+}
+function random() {
+  const R = rng(Date.now()); boxes = [];
+  for (const [b, o] of [[DOG, 'chien'], [CAT, 'chat'], [bboxOf(OBJECTS[3]), 'chien']]) { const n = 2 + Math.floor(R() * 3); for (let i = 0; i < n; i++) boxes.push({ b: shift(b, (R() - .5) * 26, (R() - .5) * 18, .85 + R() * .35, .85 + R() * .35), s: Math.round((.5 + R() * .49) * 100) / 100, o }); }
+}
+// plan des étapes : 0 = tri ; puis pour chaque boîte gardée : (garder) puis (supprimer)
+function plan() {
+  boxes.sort((a, b) => b.s - a.s); boxes.forEach((b, i) => b.n = i + 1);
+  steps = [{ kind: 'sort', st: boxes.map(() => 'c') }];
+  const st = boxes.map(() => 'c');
+  while (st.includes('c')) {
+    const k = st.indexOf('c'); st[k] = 'k'; steps.push({ kind: 'keep', k, st: st.slice() });
+    const sup = []; boxes.forEach((b, i) => { if (st[i] === 'c' && b.o === boxes[k].o && iou(b.b, boxes[k].b) > th) { st[i] = 's'; sup.push(i); } });
+    steps.push({ kind: 'sup', k, sup, st: st.slice() });
+  }
+  steps.push({ kind: 'end', st: st.slice() });
+  player.n = steps.length;
+}
+const player = new Player({ n: 1, onStep: render, speed: 1300 });
+$('#bar').append(playerBar(player));
+function render(i) {
+  const s = steps[Math.min(i, steps.length - 1)];
+  ctx.clearRect(0, 0, cv.width, cv.height); drawScenePhoto(ctx, S);
+  const order = boxes.map((b, j) => j).sort((a, b) => ({ s: 0, c: 1, k: 2 })[s.st[a]] - ({ s: 0, c: 1, k: 2 })[s.st[b]]);
+  for (const j of order) {
+    const b = boxes[j], stt = s.st[j], cur = s.k === j;
+    const col = stt === 'k' ? '#0f9e8f' : stt === 's' ? 'rgba(120,120,120,.55)' : '#e09a2d';
+    ctx.setLineDash(stt === 's' ? [6, 5] : []); ctx.lineWidth = cur ? 5 : 3; ctx.strokeStyle = col;
+    ctx.strokeRect(b.b[0] * S, b.b[1] * S, (b.b[2] - b.b[0]) * S, (b.b[3] - b.b[1]) * S); ctx.setLineDash([]);
+    ctx.font = '600 14px IBM Plex Mono, monospace'; const t = fmt(b.s, 2), w = ctx.measureText(t).width + 8;
+    ctx.fillStyle = col; ctx.fillRect(b.b[0] * S, b.b[1] * S - 20, w, 20); ctx.fillStyle = '#fff'; ctx.fillText(t, b.b[0] * S + 4, b.b[1] * S - 5);
+  }
+  const li = $$('#algo li'); li.forEach(l => l.classList.remove('on'));
+  if (s.kind === 'sort') li[0].classList.add('on'); if (s.kind === 'keep') li[1].classList.add('on'); if (s.kind === 'sup') li[2].classList.add('on'); if (s.kind === 'end') li[3].classList.add('on');
+  const m = { sort: `Tri par score : ${boxes.map(b => fmt(b.s, 2)).join(' ; ')} (toutes candidates, en orange).`,
+    keep: s.k !== undefined ? `On garde la meilleure candidate restante : <span class="res">${fmt(boxes[s.k].s, 2)}</span> (${boxes[s.k].o}).` : '',
+    sup: s.k !== undefined ? (s.sup && s.sup.length ? `IoU &gt; ${fmt(th, 2)} avec ${fmt(boxes[s.k].s, 2)} → supprimées : ${s.sup.map(j => fmt(boxes[j].s, 2)).join(', ')}.` : `Aucune candidate n’a une IoU &gt; ${fmt(th, 2)} avec ${fmt(boxes[s.k].s, 2)}.`) : '',
+    end: `Plus aucune candidate : ${s.st.filter(x => x === 'k').length} boîte(s) gardée(s) sur ${boxes.length}.` }[s.kind];
+  $('#msg').innerHTML = m;
+  const ref = s.k;
+  $('#tbl').innerHTML = `<tr><th>Rang</th><th>Score</th><th>Objet</th><th>${ref !== undefined ? 'IoU avec ' + fmt(boxes[ref].s, 2) : 'IoU'}</th><th>État</th></tr>` +
+    boxes.map((b, j) => `<tr class="${j === ref ? 'sel' : ''}"><td>${b.n}</td><td>${fmt(b.s, 2)}</td><td style="text-align:right">${b.o}</td><td>${ref !== undefined && j !== ref ? fmt(iou(b.b, boxes[ref].b), 2) : '—'}</td><td><span class="st ${s.st[j]}">${{ c: 'candidate', k: 'gardée', s: 'supprimée' }[s.st[j]]}</span></td></tr>`).join('');
+}
+$('#rnd').addEventListener('click', () => { random(); plan(); player.go(0); });
+$('#ex').addEventListener('click', () => { example(); plan(); player.go(0); });
+example(); plan(); render(0);
+</script>
+</body>
+</html>
